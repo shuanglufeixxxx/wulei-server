@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="wulei.mapper.TokenMapper">
+    <insert id="createNewToken" parameterType="Token">
+        insert into token (username, series, tokenValue, lastUsedDate)
+        values( #{username}, #{series}, #{tokenValue}, #{lastUsedDate} )
+    </insert>
+
+    <update id="updateToken">
+        update token
+        set tokenValue = #{param2}, lastUsedDate = #{param3}
+        where series = #{param1}
+    </update>
+
+    <select id="getTokenForSeries" resultType="Token">
+        select *
+        from token
+        where series = #{seriesId}
+    </select>
+
+    <delete id="removeUserTokens" parameterType="String">
+        delete from token
+        where username = #{username}
+    </delete>
+</mapper>

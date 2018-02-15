@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="wulei.mapper.FeaturedPictureMapper">
+    <select id="selectByPlace" resultType="Picture">
+        select picture.id as id, previewSource, source
+        from picture join featuredPicture on picture.id = featuredPicture.pictureId
+        where place = #{place}
+    </select>
+</mapper>
