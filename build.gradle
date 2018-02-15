@@ -26,10 +26,10 @@ repositories {
 dependencies {
 	compile('org.springframework.boot:spring-boot-starter-security')
 	compile('org.springframework.boot:spring-boot-starter-web')
-	compile('org.springframework.boot:spring-boot-starter-jdbc')
 	compile('org.xerial:sqlite-jdbc:3.21.0')
 	compile('org.mybatis:mybatis:3.4.5')
 	compile('commons-io:commons-io:2.6')
+	compile('org.springframework:spring-jdbc:4.1.5.RELEASE')
 	testCompile('org.springframework.boot:spring-boot-starter-test')
 	testCompile('org.springframework.security:spring-security-test')
 }
