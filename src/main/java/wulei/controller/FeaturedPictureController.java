@@ -2,23 +2,29 @@ package wulei.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+import wulei.domain.Picture;
 import wulei.modelpublic.PicturePublic;
-import wulei.service.FeaturedPictureService;
+import wulei.repository.PictureRepository;
 
 import java.util.Arrays;
 import java.util.List;
 
 @RestController
-@RequestMapping("featuredPicture")
+@RequestMapping("/featuredPicture")
 public class FeaturedPictureController {
 
     @Autowired
-    private FeaturedPictureService featuredPictureService;
+    private PictureRepository pictureRepository;
 
     @GetMapping
     public List<PicturePublic> get(@RequestParam String place) {
-        return Arrays.asList(featuredPictureService
-                .selectByPlace(place)
+//        return Arrays.asList(pictureRepository
+//                .findByPlaceFeatured(place)
+//                .stream()
+//                .map(Picture::new)
+//                .toArray(Picture[]::new)
+//        );
+        return Arrays.asList(pictureRepository.findByPlaceFeatured(place)
                 .stream()
                 .map(PicturePublic::new)
                 .toArray(PicturePublic[]::new)

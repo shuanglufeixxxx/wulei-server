@@ -1,26 +1,28 @@
 package wulei.security;
 
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.AuthorityUtils;
 import org.springframework.security.core.userdetails.User;
 import wulei.domain.Account;
+import wulei.services.UUIDUtil;
 
 import java.util.Collection;
 
 public class AccountDetails extends User {
 
-    private String id;
+    private Long id;
 
-    public AccountDetails(Account account, Collection<? extends GrantedAuthority> authorities) {
-        super(account.getUsername(), account.getPassword(), authorities);
+    public AccountDetails(Long id, String username, String password, Collection<? extends GrantedAuthority> authorities) {
+        super(username, password, authorities);
 
-        this.id = account.getId();
+        this.id = id;
     }
 
-    public String getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(String id) {
+    public void setId(Long id) {
         this.id = id;
     }
 }

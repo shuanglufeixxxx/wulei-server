@@ -1,24 +1,25 @@
 package wulei.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Example;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
-import wulei.modelpublic.AccountPublic;
+import wulei.domain.Account;
 import wulei.modelpublic.SignInInfo;
 import wulei.modelpublic.SignUpInfo;
 import wulei.modelpublic.Value;
+import wulei.repository.AccountRepository;
 import wulei.security.AccountDetails;
 import wulei.security.SignInWithFormSubmissionUrlProvider;
-import wulei.service.AccountService;
 
 @Controller
 @RequestMapping("/account")
 class AccountController {
 
     @Autowired
-    private AccountService accountService;
+    private AccountRepository accountRepository;
 
     @Autowired
     private SignInWithFormSubmissionUrlProvider urlProvider;
@@ -26,16 +27,23 @@ class AccountController {
     @GetMapping("/exist")
     @ResponseBody
     public Value<Boolean> exist(@RequestParam String username) {
-        return new Value<Boolean>( this.accountService.countByUsername(username) > 0 );
+        Account account = new Account();
+        account.setUsername(username);
+        return new Value<Boolean>( this.accountRepository.exists( Example.of(account)) );
     }
 
     @PostMapping(value = "/signUp")
     public String signUp(@RequestBody SignUpInfo signUpInfo, @RequestParam(defaultValue = "Yes") String rememberMe) {
-        if( this.accountService.countByUsername( signUpInfo.getUsername() ) > 0 ) {
+        Account account = new Account();
+        account.setUsername( signUpInfo.getUsername() );
+
+        if( this.accountRepository.exists( Example.of(account)) ) {
             return "forward:/account/signInFailed";
         }
 
-        this.accountService.insert( signUpInfo.getUsername(), signUpInfo.getPassword() );
+        account.setPassword( signUpInfo.getPassword() );
+
+        this.accountRepository.save(account);
 
         return "forward:" + urlProvider.getUrlWithParams(signUpInfo.getUsername(),
                 signUpInfo.getPassword(), "Yes".equals(rememberMe));
@@ -51,24 +59,32 @@ class AccountController {
     @RequestMapping(value = "/signInSucceed")
     @ResponseStatus(HttpStatus.OK)
     @ResponseBody
-    public Value<AccountPublic> signInSucceed(@AuthenticationPrincipal AccountDetails accountDetails) {
-        return new Value<AccountPublic>( new AccountPublic( accountDetails.getId(), accountDetails.getUsername() ) );
+    public Value<Account> signInSucceed(@AuthenticationPrincipal AccountDetails accountDetails) {
+        Account account = new Account( accountDetails.getUsername(), null );
+        account.setId(accountDetails.getId());
+
+        return new Value<Account>(account);
     }
 
     @RequestMapping(value = "/signInFailed")
     @ResponseStatus(HttpStatus.UNAUTHORIZED)
     @ResponseBody
-    public Value<AccountPublic> signInFailed() {
-        return new Value<AccountPublic>(null);
+    public Value<Account> signInFailed() {
+        return new Value<Account>(null);
     }
 
     @RequestMapping(value = "/retrieveAccountSignedIn")
     @ResponseStatus(HttpStatus.OK)
     @ResponseBody
-    public Value<AccountPublic> retrieveAccountSignedIn(@AuthenticationPrincipal AccountDetails accountDetails) {
-        AccountPublic accountPublic = accountDetails == null ?
-                null : new AccountPublic( accountDetails.getId(), accountDetails.getUsername() );
-        return new Value<AccountPublic>(accountPublic);
+    public Value<Account> retrieveAccountSignedIn(@AuthenticationPrincipal AccountDetails accountDetails) {
+        Account account = accountDetails == null ?
+                null : new Account( accountDetails.getUsername(), null );
+
+        if(account != null) {
+            account.setId(accountDetails.getId());
+        }
+
+        return new Value<Account>(account);
     }
 
     @RequestMapping(value = "/signOutSucceed")

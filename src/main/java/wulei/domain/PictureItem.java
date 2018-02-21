@@ -1,40 +1,47 @@
 package wulei.domain;
 
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+
+@Entity
 public class PictureItem {
 
-    private String id;
-    private String pictureCollectionId;
-    private String pictureId;
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private Long id;
+    private Long pictureCollectionId;
+    private Long pictureId;
 
     public PictureItem() {}
 
-    public PictureItem(String id, String pictureCollectionId, String pictureId) {
-        this.id = id;
+    public PictureItem(Long pictureCollectionId, Long pictureId) {
         this.pictureCollectionId = pictureCollectionId;
         this.pictureId = pictureId;
     }
 
-    public String getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(String id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
-    public String getPictureCollectionId() {
+    public Long getPictureCollectionId() {
         return this.pictureCollectionId;
     }
 
-    public void setPictureCollectionId(String pictureCollectionId) {
+    public void setPictureCollectionId(Long pictureCollectionId) {
         this.pictureCollectionId = pictureCollectionId;
     }
 
-    public String getPictureId() {
+    public Long getPictureId() {
         return this.pictureId;
     }
 
-    public void setPictureId(String pictureId) {
+    public void setPictureId(Long pictureId) {
         this.pictureId = pictureId;
     }
 }

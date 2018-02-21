@@ -1,0 +1,4 @@
+---
+applications:
+- name: wulei-server
+  path: build/libs/exploded/wulei-server-0.0.1-SNAPSHOT.war

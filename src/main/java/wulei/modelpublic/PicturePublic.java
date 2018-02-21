@@ -1,30 +1,38 @@
 package wulei.modelpublic;
 
+import org.apache.commons.io.IOUtils;
 import wulei.domain.Picture;
 
 public class PicturePublic {
 
-    private String id;
+    private Long id;
     private String previewSource;
     private String source;
 
-    public PicturePublic(String id, String previewSource, String source) {
-        this.id = id;
-        this.previewSource = previewSource;
-        this.source = source;
-    }
+//    public PicturePublic(String id, String previewSource, String source) {
+//        this.id = id;
+//        this.previewSource = previewSource;
+//        this.source = source;
+//    }
+
+    public PicturePublic() {}
 
     public PicturePublic(Picture picture) {
         this.id = picture.getId();
-        this.previewSource = picture.getPreviewSource();
-        this.source = picture.getSource();
+        try {
+            this.previewSource = IOUtils.toString(picture.getPreviewSource(), "UTF-8");
+            this.source = IOUtils.toString(picture.getSource(), "UTF-8");
+        }
+        catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
-    public String getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(String id) {
+    public void setId(Long id) {
         this.id = id;
     }
 

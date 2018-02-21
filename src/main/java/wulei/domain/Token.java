@@ -2,11 +2,16 @@ package wulei.domain;
 
 import org.springframework.security.web.authentication.rememberme.PersistentRememberMeToken;
 
+import javax.persistence.Entity;
+import javax.persistence.Id;
 import java.util.Date;
 
+@Entity
 public class Token {
 
     private String username;
+
+    @Id
     private String series;
     private String tokenValue;
     private String lastUsedDate;
@@ -25,7 +30,7 @@ public class Token {
                 getUsername(), getSeries(), getTokenValue(), new Date( getLastUsedDate() ) );
     }
 
-    public Token(String username, String series, String tokenValue, String lastUsedDate) {
+    public Token(String series, String username, String tokenValue, String lastUsedDate) {
         this.username = username;
         this.series = series;
         this.tokenValue = tokenValue;

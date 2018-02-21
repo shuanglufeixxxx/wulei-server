@@ -1,65 +1,83 @@
 package wulei.modelpublic;
 
+import org.apache.commons.io.FileUtils;
+import org.apache.commons.io.IOUtils;
 import wulei.domain.Post;
+
+import java.io.IOException;
 
 public class PostPublic {
 
-    private String id;
-    private String pictureCollectionId;
-    private String playbillId;
+    private Long id;
+    private Long pictureCollectionId;
+    private Long playbillId;
     private String title;
     private String essay;
     private String createDate;
     private String classify;
-    private String previewPictureCollectionId;
+    private Long previewPictureCollectionId;
     private String previewStyle;
 
     public PostPublic(Post post) {
         this.id = post.getId();
         this.pictureCollectionId = post.getPictureCollectionId();
         this.playbillId = post.getPlaybill();
-        this.title = post.getTitle();
-        this.essay = post.getEssay();
+        try {
+            byte[] titleTemp = post.getTitle();
+            byte[] essayTemp = post.getEssay();
+            if(titleTemp != null) {
+                String titleFileName = IOUtils.toString(titleTemp, "UTF-8");
+                this.title = FileUtils.readFileToString(FileUtils.getFile(titleFileName), "UTF-8");
+            }
+
+            if(essayTemp != null) {
+                String essayFileName = IOUtils.toString(essayTemp, "UTF-8");
+                this.essay = FileUtils.readFileToString(FileUtils.getFile(essayFileName), "UTF-8");
+            }
+        }
+        catch (IOException e) {
+            e.printStackTrace();
+        }
         this.createDate = post.getCreateDate();
         this.classify = post.getClassify();
         this.previewPictureCollectionId = post.getPreviewPictureCollectionId();
         this.previewStyle = post.getPreviewStyle();
     }
 
-    public PostPublic(String id, String pictureCollectionId, String playbillId, String title, String essay,
-                      String createDate, String classify, String previewPictureCollectionId, String previewStyle) {
-        this.id = id;
-        this.pictureCollectionId = pictureCollectionId;
-        this.playbillId = playbillId;
-        this.title = title;
-        this.essay = essay;
-        this.createDate = createDate;
-        this.classify = classify;
-        this.previewPictureCollectionId = previewPictureCollectionId;
-        this.previewStyle = previewStyle;
-    }
+//    public PostPublic(String id, String pictureCollectionId, String playbillId, String title, String essay,
+//                      String createDate, String classify, String previewPictureCollectionId, String previewStyle) {
+//        this.id = id;
+//        this.pictureCollectionId = pictureCollectionId;
+//        this.playbillId = playbillId;
+//        this.title = title;
+//        this.essay = essay;
+//        this.createDate = createDate;
+//        this.classify = classify;
+//        this.previewPictureCollectionId = previewPictureCollectionId;
+//        this.previewStyle = previewStyle;
+//    }
 
-    public String getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(String id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
-    public String getPictureCollectionId() {
+    public Long getPictureCollectionId() {
         return this.pictureCollectionId;
     }
 
-    public void setPictureCollectionId(String pictureCollectionId) {
+    public void setPictureCollectionId(Long pictureCollectionId) {
         this.pictureCollectionId = pictureCollectionId;
     }
 
-    public String getPlaybill() {
+    public Long getPlaybill() {
         return this.playbillId;
     }
 
-    public void setPlaybill(String playbillId) {
+    public void setPlaybill(Long playbillId) {
         this.playbillId = playbillId;
     }
 
@@ -95,11 +113,11 @@ public class PostPublic {
         this.classify = classify;
     }
 
-    public String getPreviewPictureCollectionId() {
+    public Long getPreviewPictureCollectionId() {
         return this.previewPictureCollectionId;
     }
 
-    public void setPreviewPictureCollectionId(String previewPictureCollectionId) {
+    public void setPreviewPictureCollectionId(Long previewPictureCollectionId) {
         this.previewPictureCollectionId = previewPictureCollectionId;
     }
 

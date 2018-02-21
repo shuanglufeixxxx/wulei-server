@@ -1,38 +1,44 @@
 package wulei.domain;
 
-import wulei.modelpublic.FeaturedPostPublic;
 
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+
+@Entity
 public class FeaturedPost {
 
-    private String id;
-    private String postId;
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private Long id;
+    private Long postId;
 
     public FeaturedPost() {}
 
-    public FeaturedPost(FeaturedPostPublic activityFeaturedPost) {
-        this.id = activityFeaturedPost.getId();
-        this.postId = activityFeaturedPost.getPostId();
-    }
+//    public FeaturedPost(FeaturedPostPublic activityFeaturedPost) {
+//        this.id = activityFeaturedPost.getId();
+//        this.postId = activityFeaturedPost.getPostId();
+//    }
 
-    public FeaturedPost(String id, String postId) {
-        this.id = id;
+    public FeaturedPost(Long postId) {
         this.postId = postId;
     }
 
-    public String getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(String id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
-    public String getPostId() {
+    public Long getPostId() {
         return this.postId;
     }
 
 
-    public void setPostId(String postId) {
+    public void setPostId(Long postId) {
         this.postId = postId;
     }
 }

@@ -2,35 +2,44 @@ package wulei.domain;
 
 import wulei.modelpublic.PostPublic;
 
+import javax.persistence.*;
+
+@Entity
 public class Post {
 
-    private String id;
-    private String pictureCollectionId;
-    private String playbillId;
-    private String title;
-    private String essay;
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private Long id;
+    private Long pictureCollectionId;
+    private Long playbillId;
+
+    @Lob
+    private byte[] title;
+
+    @Lob
+    private byte[] essay;
+
     private String createDate;
     private String classify;
-    private String previewPictureCollectionId;
+    private Long previewPictureCollectionId;
     private String previewStyle;
 
     public Post() {}
 
-    public Post(PostPublic post) {
-        this.id = post.getId();
-        this.pictureCollectionId = post.getPictureCollectionId();
-        this.playbillId = post.getPlaybill();
-        this.title = post.getTitle();
-        this.essay = post.getEssay();
-        this.createDate = post.getCreateDate();
-        this.classify = post.getClassify();
-        this.previewPictureCollectionId = post.getPreviewPictureCollectionId();
-        this.previewStyle = post.getPreviewStyle();
-    }
+//    public Post(PostPublic post) {
+//        this.id = post.getId();
+//        this.pictureCollectionId = post.getPictureCollectionId();
+//        this.playbillId = post.getPlaybill();
+//        this.title = post.getTitle();
+//        this.essay = post.getEssay();
+//        this.createDate = post.getCreateDate();
+//        this.classify = post.getClassify();
+//        this.previewPictureCollectionId = post.getPreviewPictureCollectionId();
+//        this.previewStyle = post.getPreviewStyle();
+//    }
 
-    public Post(String id, String pictureCollectionId, String playbillId, String title, String essay, String createDate,
-                String classify, String previewPictureCollectionId, String previewStyle) {
-        this.id = id;
+    public Post(Long pictureCollectionId, Long playbillId, byte[] title, byte[] essay, String createDate,
+                String classify, Long previewPictureCollectionId, String previewStyle) {
         this.pictureCollectionId = pictureCollectionId;
         this.playbillId = playbillId;
         this.title = title;
@@ -41,43 +50,43 @@ public class Post {
         this.previewStyle = previewStyle;
     }
 
-    public String getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(String id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
-    public String getPictureCollectionId() {
+    public Long getPictureCollectionId() {
         return this.pictureCollectionId;
     }
 
-    public void setPictureCollectionId(String pictureCollectionId) {
+    public void setPictureCollectionId(Long pictureCollectionId) {
         this.pictureCollectionId = pictureCollectionId;
     }
 
-    public String getPlaybill() {
+    public Long getPlaybill() {
         return this.playbillId;
     }
 
-    public void setPlaybill(String playbillId) {
+    public void setPlaybill(Long playbillId) {
         this.playbillId = playbillId;
     }
 
-    public String getTitle() {
+    public byte[] getTitle() {
         return this.title;
     }
 
-    public void setTitle(String title) {
+    public void setTitle(byte[] title) {
         this.title = title;
     }
 
-    public String getEssay() {
+    public byte[] getEssay() {
         return this.essay;
     }
 
-    public void setEssay(String essay) {
+    public void setEssay(byte[] essay) {
         this.essay = essay;
     }
 
@@ -97,11 +106,11 @@ public class Post {
         this.classify = classify;
     }
 
-    public String getPreviewPictureCollectionId() {
+    public Long getPreviewPictureCollectionId() {
         return this.previewPictureCollectionId;
     }
 
-    public void setPreviewPictureCollectionId(String previewPictureCollectionId) {
+    public void setPreviewPictureCollectionId(Long previewPictureCollectionId) {
         this.previewPictureCollectionId = previewPictureCollectionId;
     }
 

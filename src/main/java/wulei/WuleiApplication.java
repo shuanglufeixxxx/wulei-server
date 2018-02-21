@@ -1,27 +1,38 @@
 package wulei;
 
+import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.builder.SpringApplicationBuilder;
+import org.springframework.boot.web.support.SpringBootServletInitializer;
 import org.springframework.context.annotation.Bean;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
+import wulei.domain.FeaturedPicture;
 import wulei.domain.FeaturedPost;
-import wulei.service.FeaturedPostService;
-import wulei.service.PostService;
-import wulei.service.UUIDUtil;
+import wulei.repository.FeaturedPictureRepository;
+import wulei.repository.FeaturedPostRepository;
+import wulei.repository.PictureRepository;
+import wulei.services.PostService;
 
 import java.io.FileInputStream;
 import java.io.InputStream;
+import java.nio.file.Paths;
 
 @SpringBootApplication
 @EnableGlobalMethodSecurity(securedEnabled = true)
 @Controller
-public class WuleiApplication {
+public class WuleiApplication extends SpringBootServletInitializer {
 
-    public static void main(String[] args) {
+    @Override
+    protected SpringApplicationBuilder configure(SpringApplicationBuilder application) {
+        return application.sources(WuleiApplication.class);
+    }
+
+    public static void main(String[] args) throws Exception {
         SpringApplication.run(WuleiApplication.class, args);
     }
 
@@ -31,11 +42,38 @@ public class WuleiApplication {
     }
 
 //    @Bean
-    CommandLineRunner init(PostService postService, FeaturedPostService featuredPostService) {
+    CommandLineRunner init(PostService postService, FeaturedPostRepository featuredPostRepository) {
         return (evt) -> {
+//            featuredPostRepository.modify();
+//            System.out.println("------------------------------------------------------aaaa");
+//            System.out.print("----------------------------------------------");
+//            System.out.println(Paths.get("").resolve("data").toUri());
+
+
             InputStream inputStream = new FileInputStream("data");
             String total = IOUtils.toString(inputStream, "UTF-8");
-            String[] items= total.trim().split("]]]]");
+
+//            System.out.print("----------------------------------------------");
+//            System.out.println(total);
+//            System.out.print("----------------------------------------------");
+//            System.out.println( Paths.get("").resolve("images/7fad39afgy1fc0pr1ew50j22io1w0kjl.jpg").toUri().toString() );
+
+//            byte[] bytes = IOUtils.toByteArray( Paths.get("").resolve("images/7fad39afgy1fc0pr1ew50j22io1w0kjl.jpg").toUri() );
+
+//            System.out.print("----------------------------------------------");
+//            System.out.println( bytes.length );
+
+
+
+
+            String[] _items= total.trim().split("]]]]");
+            int label = 1;
+
+            int times = 5;
+            int length = 15;
+
+            String[] items = new String[5];
+            System.arraycopy(_items, (times - 1) * length, items, 0, 5);
 
             for(String item: items) {
                 String[] subItems = item.split("\\[\\[\\[\\[");
@@ -88,20 +126,23 @@ public class WuleiApplication {
                     classifyName = "daily-life";
                 }
 
-                String postId = postService.insert(pictureFileNames, null, null, essay,
-                        classifyName, previewPictureFileNames, previewStyle);
-
-                featuredPostService.insert( new FeaturedPost( UUIDUtil.getInstance().generateId(), postId ));
+                Long postId = postService.insert(pictureFileNames, null, null, essay,
+                        classifyName, previewPictureFileNames, previewStyle, String.valueOf(label));
+                label++;
+                featuredPostRepository.save( new FeaturedPost( postId ));
             }
         };
     }
 
 //    @Bean
-    CommandLineRunner init2(PostService postService, FeaturedPostService featuredPostService) {
+    CommandLineRunner init2(PostService postService, FeaturedPostRepository featuredPostRepository) {
         return (evt) -> {
+//            System.out.print("----------------------------------------------");
+//            System.out.println(Paths.get("").resolve("data2").toUri());
             InputStream inputStream = new FileInputStream("data2");
             String total = IOUtils.toString(inputStream, "UTF-8");
             String[] items= total.trim().split("]]]]");
+            int label = 1;
 
             for(String item: items) {
                 String[] subItems = item.split("\\[\\[\\[\\[");
@@ -130,10 +171,19 @@ public class WuleiApplication {
                 }
 
                 String classifyName = subItems[4].contains("t") ? "tv-series" : "movie";
-                String postId = postService.insert(pictureFileNames, playbillFileName, title, essay,
-                        classifyName, previewPictureFileNames, previewStyle);
-                featuredPostService.insert( new FeaturedPost( UUIDUtil.getInstance().generateId(), postId ));
+                Long postId = postService.insert(pictureFileNames, playbillFileName, title, essay,
+                        classifyName, previewPictureFileNames, previewStyle, "label" + String.valueOf(label));
+                label++;
+                featuredPostRepository.save( new FeaturedPost( postId ));
             }
+        };
+    }
+
+//    @Bean
+    CommandLineRunner init3(FeaturedPictureRepository featuredPictureRepository) {
+        return (evt) -> {
+            featuredPictureRepository.save(new FeaturedPicture((long) 91, "sign-in"));
+            featuredPictureRepository.save(new FeaturedPicture((long) 291, "sign-up"));
         };
     }
 }

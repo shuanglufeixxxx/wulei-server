@@ -1,4 +1,4 @@
-package wulei.service;
+package wulei.services;
 
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.UrlResource;

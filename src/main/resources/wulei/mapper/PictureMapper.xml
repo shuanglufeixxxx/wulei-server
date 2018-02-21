@@ -1,28 +1,28 @@
-<?xml version="1.0" encoding="UTF-8" ?>
-<!DOCTYPE mapper
-        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
-        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!--<?xml version="1.0" encoding="UTF-8" ?>-->
+<!--<!DOCTYPE mapper-->
+        <!--PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"-->
+        <!--"http://mybatis.org/dtd/mybatis-3-mapper.dtd">-->
 
-<mapper namespace="wulei.mapper.PictureMapper">
-    <select id="selectById" resultType="Picture">
-        select * from picture where id = #{id}
-    </select>
-    <select id="selectByPictureCollectionId" resultType="Picture">
-        select picture.id as id, previewSource, source
-        from picture join pictureItem on picture.id = pictureItem.pictureId
-        where pictureItem.pictureCollectionId = #{pictureCollectionId}
-    </select>
+<!--<mapper namespace="wulei.mapper.PictureMapper">-->
+    <!--<select id="selectById" resultType="Picture">-->
+        <!--select * from picture where id = #{id}-->
+    <!--</select>-->
+    <!--<select id="selectByPictureCollectionId" resultType="Picture">-->
+        <!--select picture.id as id, previewSource, source-->
+        <!--from picture join pictureItem on picture.id = pictureItem.pictureId-->
+        <!--where pictureItem.pictureCollectionId = #{pictureCollectionId}-->
+    <!--</select>-->
 
-    <insert id="insert" parameterType="Picture">
-        insert into picture (id, previewSource, source)
-        values ( #{id}, #{previewSource}, #{source} )
-    </insert>
-    <insert id="insertItem" parameterType="PictureItem">
-        insert into pictureItem ( id, pictureCollectionId, pictureId )
-        values ( #{id}, #{pictureCollectionId}, #{pictureId} )
-    </insert>
-    <insert id="insertCollection" parameterType="PictureCollection">
-        insert into pictureCollection ( id )
-        values ( #{id} )
-    </insert>
-</mapper>
+    <!--<insert id="insert" parameterType="Picture">-->
+        <!--insert into picture (id, previewSource, source)-->
+        <!--values ( #{id}, #{previewSource}, #{source} )-->
+    <!--</insert>-->
+    <!--<insert id="insertItem" parameterType="PictureItem">-->
+        <!--insert into pictureItem ( id, pictureCollectionId, pictureId )-->
+        <!--values ( #{id}, #{pictureCollectionId}, #{pictureId} )-->
+    <!--</insert>-->
+    <!--<insert id="insertCollection" parameterType="PictureCollection">-->
+        <!--insert into pictureCollection ( id )-->
+        <!--values ( #{id} )-->
+    <!--</insert>-->
+<!--</mapper>-->

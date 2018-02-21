@@ -11,22 +11,23 @@ import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.core.authority.AuthorityUtils;
 import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.web.csrf.CookieCsrfTokenRepository;
 import org.springframework.security.web.firewall.HttpFirewall;
 import org.springframework.security.web.firewall.StrictHttpFirewall;
-import org.springframework.web.servlet.config.annotation.CorsRegistry;
-import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
-import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
 import wulei.domain.Account;
-import wulei.service.AccountService;
-import wulei.service.TokenService;
+import wulei.repository.AccountRepository;
+import wulei.services.TokenService;
 
 @Configuration
 @Order(SecurityProperties.ACCESS_OVERRIDE_ORDER)
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
+//    @Autowired
+//    AccountService accountService;
+
     @Autowired
-    AccountService accountService;
+    AccountRepository accountRepository;
 
     @Autowired
     TokenService tokenService;
@@ -42,8 +43,13 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Bean
     public UserDetailsService userDetailsService() {
         return username -> {
-            Account account = accountService.selectByUsername(username);
-            return new AccountDetails( account, AuthorityUtils.createAuthorityList("ROLE_USER") );
+            Account account = accountRepository.findByUsername(username);
+
+            if(account == null) {
+                throw new UsernameNotFoundException("");
+            }
+
+            return new AccountDetails(account.getId(), account.getUsername(), account.getPassword(), AuthorityUtils.createAuthorityList("ROLE_USER") );
         };
     }
 

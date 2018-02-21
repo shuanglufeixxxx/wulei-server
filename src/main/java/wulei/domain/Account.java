@@ -1,26 +1,31 @@
 package wulei.domain;
 
-import wulei.modelpublic.AccountPublic;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
 
+@Entity
 public class Account {
 
-    private String id;
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private Long id;
     private String username;
     private String password;
 
     public Account() {}
 
-    public Account(String id, String username, String password) {
-        this.id = id;
+    public Account(String username, String password) {
         this.username = username;
         this.password = password;
     }
 
-    public String getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(String id) {
+    public void setId(Long id) {
         this.id = id;
     }
 

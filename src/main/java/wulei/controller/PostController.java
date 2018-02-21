@@ -2,8 +2,10 @@ package wulei.controller;
 
 
 import org.springframework.web.bind.annotation.*;
+import wulei.domain.Post;
 import wulei.modelpublic.PostPublic;
-import wulei.service.PostService;
+import wulei.repository.PostRepository;
+import wulei.services.PostService;
 
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -15,17 +17,22 @@ import java.util.List;
 class PostController {
 
     @Autowired
-    private PostService postService;
+    private PostRepository postRepository;
 
     @GetMapping("/{id}")
-    public PostPublic get(@PathVariable String id) {
-        return new PostPublic( this.postService.selectById(id) );
+    public PostPublic get(@PathVariable long id) {
+        return new PostPublic( this.postRepository.findOne(id) );
     }
 
     @GetMapping
     public List<PostPublic> getByClassify(@RequestParam String classify) {
-        return Arrays.asList(postService
-                .selectByClassify(classify)
+//        return Arrays.asList(postRepository
+//                .findByClassifyFeatured(classify)
+//                .stream()
+//                .map(Post::new)
+//                .toArray(Post[]::new)
+//        );
+        return Arrays.asList(postRepository.findByClassifyFeatured(classify)
                 .stream()
                 .map(PostPublic::new)
                 .toArray(PostPublic[]::new)

@@ -1,23 +1,29 @@
 package wulei.domain;
 
-import wulei.modelpublic.FeaturedPicturePublic;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
 
+@Entity
 public class FeaturedPicture {
 
-    private String id;
-    private String pictureId;
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private Long id;
+    private Long pictureId;
     private String place;
 
     public FeaturedPicture() {}
 
-    public FeaturedPicture(FeaturedPicturePublic featuredPicturePublic) {
-        this.id = featuredPicturePublic.getId();
-        this.pictureId = featuredPicturePublic.getPictureId();
-    }
+//    public FeaturedPicture(FeaturedPicturePublic featuredPicturePublic) {
+//        this.id = featuredPicturePublic.getId();
+//        this.pictureId = featuredPicturePublic.getPictureId();
+//    }
 
-    public FeaturedPicture(String id, String pictureId) {
-        this.id = id;
+    public FeaturedPicture(Long pictureId, String place) {
         this.pictureId = pictureId;
+        this.place = place;
     }
 
     public String getPlace() {
@@ -28,20 +34,20 @@ public class FeaturedPicture {
         this.place = place;
     }
 
-    public String getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(String id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
-    public String getPictureId() {
+    public Long getPictureId() {
         return this.pictureId;
     }
 
 
-    public void setPictureId(String pictureId) {
+    public void setPictureId(Long pictureId) {
         this.pictureId = pictureId;
     }
 }

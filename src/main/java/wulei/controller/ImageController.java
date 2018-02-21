@@ -5,7 +5,7 @@ import org.springframework.core.io.Resource;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import wulei.service.ImageService;
+import wulei.services.ImageService;
 
 @RestController
 @RequestMapping("/images")
