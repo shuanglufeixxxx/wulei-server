@@ -1,6 +1,5 @@
 package wulei;
 
-import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
@@ -15,12 +14,33 @@ import wulei.domain.FeaturedPicture;
 import wulei.domain.FeaturedPost;
 import wulei.repository.FeaturedPictureRepository;
 import wulei.repository.FeaturedPostRepository;
-import wulei.repository.PictureRepository;
 import wulei.services.PostService;
 
 import java.io.FileInputStream;
 import java.io.InputStream;
-import java.nio.file.Paths;
+
+import com.google.gson.Gson;
+
+class NonDramaPost {
+    String classifyName;
+    String essay;
+    String[] pictures;
+    String previewStyle;
+    String[] previewPictures;
+};
+
+class DramaPost {
+    String classifyName;
+    String title;
+    String essay;
+    String playbill;
+    String[] pictures;
+};
+
+class Posts {
+    NonDramaPost[] post_gallery_1;
+    DramaPost[] post_gallery_2;
+};
 
 @SpringBootApplication
 @EnableGlobalMethodSecurity(securedEnabled = true)
@@ -39,6 +59,37 @@ public class WuleiApplication extends SpringBootServletInitializer {
     @GetMapping(value = "/{path:[^.]+}/**")
     public String SinglePageApplicationSupport() {
         return "forward:/";
+    }
+
+    @Bean
+    CommandLineRunner initDatabase(PostService postService, FeaturedPostRepository featuredPostRepository) {
+        return (evt) -> {
+            String postStr = IOUtils.toString(new FileInputStream("./temp/data.json"), "UTF-8");
+            Gson gson = new Gson();
+
+            Posts posts = gson.fromJson(postStr, Posts.class);
+
+            NonDramaPost[] nonDramaPosts = posts.post_gallery_1;
+            DramaPost[] dramaPosts = posts.post_gallery_2;
+
+            int label = 0;
+            for(NonDramaPost nonDramaPost: nonDramaPosts) {
+                Long postId = postService.insert(nonDramaPost.pictures, null, null, nonDramaPost.essay,
+                    nonDramaPost.classifyName, nonDramaPost.previewPictures, nonDramaPost.previewStyle, String.valueOf(label));
+                label ++;
+                featuredPostRepository.save( new FeaturedPost( postId ));
+            }
+
+            label = 0;
+            for(DramaPost dramaPost: dramaPosts) {
+                String[] previewPictures = new String[1];
+                previewPictures[0] = dramaPost.playbill;
+                Long postId = postService.insert(dramaPost.pictures, dramaPost.playbill, dramaPost.title,
+                    dramaPost.essay, dramaPost.classifyName, previewPictures, "1*1", "label" + String.valueOf(label));
+                label ++;
+                featuredPostRepository.save( new FeaturedPost( postId ));
+            }
+        };
     }
 
 //    @Bean

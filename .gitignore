@@ -3,6 +3,9 @@ essayTitle
 images
 out
 src/main/resources/static
+temp/
+bin/
+.vscode/
 data
 data2
 sample.sqlite
