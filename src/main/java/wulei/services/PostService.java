@@ -65,51 +65,37 @@ public class PostService {
 //        }
 //    }
 
-    public Long insert(String[] pictureFileNames,
-                       String playbillFileName,
+    public Long insert(byte[][] pictures,
+                       byte[] playbill,
                        String title,
                        String essay,
                        String classify,
-                       String[] previewPictureFileNames,
-                       String previewStyle,
-                       String label) throws Exception {
+                       byte[][] previewPictures,
+                       String previewStyle) throws Exception {
 
-        Long pictureCollectionId = pictureService.insertWithPictureCollection( pictureFileNames );
+        Long pictureCollectionId = pictureService.insertWithPictureCollection( pictures );
 
         Long playbillId;
 
-        if(playbillFileName != null) {
-            //playbillId = UUIDUtil.getInstance().generateId();
-            byte[] bytes = playbillFileName.getBytes("UTF-8");
-            Picture playbill = pictureRepository.save(new Picture(bytes, bytes));
-            playbillId = playbill.getId();
+        if(playbill != null) {
+            playbillId = pictureRepository.save(new Picture(playbill, playbill)).getId();
         }
         else {
             playbillId = null;
         }
 
-        Long previewPictureCollectionId = pictureService.insertWithPictureCollection( previewPictureFileNames );
+        Long previewPictureCollectionId = pictureService.insertWithPictureCollection( previewPictures );
 
-        byte[] essayFileNameBytes = null;
-
-        if(essay != null) {
-            byte[] essayBytes = essay.getBytes("UTF-8");
-            String essayFileName = "essay/essay" + label;
-//            FileUtils.writeByteArrayToFile(FileUtils.getFile(essayFileName), essayBytes);
-            essayFileNameBytes = essayFileName.getBytes("UTF-8");
-        }
-
-        byte[] titleFileNameBytes = null;
-        if(title != null) {
-            byte[] titleBytes = title.getBytes("UTF-8");
-            String titleFileName = "essayTitle/essayTitle" + label;
-//            FileUtils.writeByteArrayToFile(FileUtils.getFile(titleFileName), titleBytes);
-            titleFileNameBytes = titleFileName.getBytes("UTF-8");
-        }
-
-        //String postId = UUIDUtil.getInstance().generateId();
-        Post post = postRepository.save( new Post(pictureCollectionId, playbillId, titleFileNameBytes, essayFileNameBytes,
-                Calendar.getInstance().getTime().toString(), classify, previewPictureCollectionId, previewStyle) );
+        Post post = postRepository.save( new Post(
+            pictureCollectionId,
+            playbillId,
+            title,
+            essay,
+            Calendar.getInstance().getTime().toString(),
+            classify,
+            previewPictureCollectionId,
+            previewStyle
+        ));
 
         return post.getId();
     }

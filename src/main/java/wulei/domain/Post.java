@@ -12,13 +12,10 @@ public class Post {
     private Long id;
     private Long pictureCollectionId;
     private Long playbillId;
+    private String title;
 
     @Lob
-    private byte[] title;
-
-    @Lob
-    private byte[] essay;
-
+    private String essay;
     private String createDate;
     private String classify;
     private Long previewPictureCollectionId;
@@ -38,7 +35,7 @@ public class Post {
 //        this.previewStyle = post.getPreviewStyle();
 //    }
 
-    public Post(Long pictureCollectionId, Long playbillId, byte[] title, byte[] essay, String createDate,
+    public Post(Long pictureCollectionId, Long playbillId, String title, String essay, String createDate,
                 String classify, Long previewPictureCollectionId, String previewStyle) {
         this.pictureCollectionId = pictureCollectionId;
         this.playbillId = playbillId;
@@ -66,27 +63,27 @@ public class Post {
         this.pictureCollectionId = pictureCollectionId;
     }
 
-    public Long getPlaybill() {
+    public Long getPlaybillId() {
         return this.playbillId;
     }
 
-    public void setPlaybill(Long playbillId) {
+    public void setPlaybillId(Long playbillId) {
         this.playbillId = playbillId;
     }
 
-    public byte[] getTitle() {
+    public String getTitle() {
         return this.title;
     }
 
-    public void setTitle(byte[] title) {
+    public void setTitle(String title) {
         this.title = title;
     }
 
-    public byte[] getEssay() {
+    public String getEssay() {
         return this.essay;
     }
 
-    public void setEssay(byte[] essay) {
+    public void setEssay(String essay) {
         this.essay = essay;
     }
 

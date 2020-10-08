@@ -17,7 +17,11 @@ import wulei.repository.FeaturedPostRepository;
 import wulei.services.PostService;
 
 import java.io.FileInputStream;
+import java.io.IOException;
 import java.io.InputStream;
+import java.nio.file.Paths;
+import java.util.Arrays;
+import java.util.stream.Stream;
 
 import com.google.gson.Gson;
 
@@ -61,10 +65,27 @@ public class WuleiApplication extends SpringBootServletInitializer {
         return "forward:/";
     }
 
-    @Bean
+    private byte[] getFileData(String path) {
+        try {
+            return IOUtils.toByteArray(Paths.get("./init_data/pictures").resolve(path).toUri());
+        }
+        catch(IOException e) {
+            return null;
+        }
+    }
+
+    private byte[][] getFileDataArray(String[] paths) {
+        byte[][] r = new byte[paths.length][];
+        for(int i = 0; i < paths.length; i++) {
+            r[i] = getFileData(paths[i]);
+        }
+        return r;
+    }
+
+    // @Bean
     CommandLineRunner initDatabase(PostService postService, FeaturedPostRepository featuredPostRepository) {
         return (evt) -> {
-            String postStr = IOUtils.toString(new FileInputStream("./temp/data.json"), "UTF-8");
+            String postStr = IOUtils.toString(new FileInputStream("./init_data/data.json"), "UTF-8");
             Gson gson = new Gson();
 
             Posts posts = gson.fromJson(postStr, Posts.class);
@@ -72,166 +93,39 @@ public class WuleiApplication extends SpringBootServletInitializer {
             NonDramaPost[] nonDramaPosts = posts.post_gallery_1;
             DramaPost[] dramaPosts = posts.post_gallery_2;
 
-            int label = 0;
             for(NonDramaPost nonDramaPost: nonDramaPosts) {
-                Long postId = postService.insert(nonDramaPost.pictures, null, null, nonDramaPost.essay,
-                    nonDramaPost.classifyName, nonDramaPost.previewPictures, nonDramaPost.previewStyle, String.valueOf(label));
-                label ++;
+                Long postId = postService.insert(
+                    this.getFileDataArray(nonDramaPost.pictures),
+                    null,
+                    null,
+                    nonDramaPost.essay,
+                    nonDramaPost.classifyName,
+                    this.getFileDataArray(nonDramaPost.previewPictures),
+                    nonDramaPost.previewStyle
+                );
+
                 featuredPostRepository.save( new FeaturedPost( postId ));
             }
-
-            label = 0;
+            
             for(DramaPost dramaPost: dramaPosts) {
                 String[] previewPictures = new String[1];
                 previewPictures[0] = dramaPost.playbill;
-                Long postId = postService.insert(dramaPost.pictures, dramaPost.playbill, dramaPost.title,
-                    dramaPost.essay, dramaPost.classifyName, previewPictures, "1*1", "label" + String.valueOf(label));
-                label ++;
+                Long postId = postService.insert(
+                    this.getFileDataArray(dramaPost.pictures),
+                    this.getFileData(dramaPost.playbill),
+                    dramaPost.title,
+                    dramaPost.essay,
+                    dramaPost.classifyName,
+                    this.getFileDataArray(previewPictures),
+                    "1*1"
+                );
                 featuredPostRepository.save( new FeaturedPost( postId ));
             }
         };
     }
 
 //    @Bean
-    CommandLineRunner init(PostService postService, FeaturedPostRepository featuredPostRepository) {
-        return (evt) -> {
-//            featuredPostRepository.modify();
-//            System.out.println("------------------------------------------------------aaaa");
-//            System.out.print("----------------------------------------------");
-//            System.out.println(Paths.get("").resolve("data").toUri());
-
-
-            InputStream inputStream = new FileInputStream("data");
-            String total = IOUtils.toString(inputStream, "UTF-8");
-
-//            System.out.print("----------------------------------------------");
-//            System.out.println(total);
-//            System.out.print("----------------------------------------------");
-//            System.out.println( Paths.get("").resolve("images/7fad39afgy1fc0pr1ew50j22io1w0kjl.jpg").toUri().toString() );
-
-//            byte[] bytes = IOUtils.toByteArray( Paths.get("").resolve("images/7fad39afgy1fc0pr1ew50j22io1w0kjl.jpg").toUri() );
-
-//            System.out.print("----------------------------------------------");
-//            System.out.println( bytes.length );
-
-
-
-
-            String[] _items= total.trim().split("]]]]");
-            int label = 1;
-
-            int times = 5;
-            int length = 15;
-
-            String[] items = new String[5];
-            System.arraycopy(_items, (times - 1) * length, items, 0, 5);
-
-            for(String item: items) {
-                String[] subItems = item.split("\\[\\[\\[\\[");
-
-                String essay = subItems[0].trim();
-
-                String[] _pictureFileNames = subItems[1].trim().split("jpg");
-                String[] pictureFileNames = new String[ _pictureFileNames.length ];
-                for(int i = 0; i < _pictureFileNames.length; i++) {
-                    pictureFileNames[i] = "images/" + _pictureFileNames[i].trim() + "jpg";
-                }
-
-                String[] previewPictureFileNames;
-                String previewStyle;
-                String previewInfo = subItems[2].trim();
-                if( previewInfo.contains("jpg") ) {
-                    previewPictureFileNames = new String[1];
-                    previewPictureFileNames[0] = "images/" + previewInfo;
-                    previewStyle = "1*1";
-                }
-                else {
-                    String amountString = previewInfo.substring(0,1);
-                    int amount = Integer.parseInt( amountString );
-                    previewPictureFileNames = new String[amount];
-                    for( int i = 0; i < amount; i++ ) {
-                        previewPictureFileNames[i] = pictureFileNames[i];
-                    }
-
-                    if( previewInfo.substring(1).compareToIgnoreCase("x") == 0 ) {
-                        String sqrtString = String.valueOf( (int) Math.sqrt( amount ) );
-                        previewStyle = sqrtString + "*" + sqrtString;
-                    }
-                    else {
-                        previewStyle = amountString + "*1";
-                    }
-                }
-
-                String classifyNameInfo = subItems[3].trim();
-                String classifyName = null;
-                if( classifyNameInfo.contains("ad") ) {
-                    classifyName = "advertisement";
-                }
-                else if( classifyNameInfo.contains("f")) {
-                    classifyName = "fashion";
-                }
-                else if ( classifyNameInfo.contains("a") ) {
-                    classifyName = "activity";
-                }
-                else if ( classifyNameInfo.contains("d") ) {
-                    classifyName = "daily-life";
-                }
-
-                Long postId = postService.insert(pictureFileNames, null, null, essay,
-                        classifyName, previewPictureFileNames, previewStyle, String.valueOf(label));
-                label++;
-                featuredPostRepository.save( new FeaturedPost( postId ));
-            }
-        };
-    }
-
-//    @Bean
-    CommandLineRunner init2(PostService postService, FeaturedPostRepository featuredPostRepository) {
-        return (evt) -> {
-//            System.out.print("----------------------------------------------");
-//            System.out.println(Paths.get("").resolve("data2").toUri());
-            InputStream inputStream = new FileInputStream("data2");
-            String total = IOUtils.toString(inputStream, "UTF-8");
-            String[] items= total.trim().split("]]]]");
-            int label = 1;
-
-            for(String item: items) {
-                String[] subItems = item.split("\\[\\[\\[\\[");
-
-                String title = subItems[0].trim();
-                String essay = subItems[1].trim();
-                String playbillFileName = "images/" + subItems[2].trim();
-
-                String _pictureFileNamesInfo = subItems[3].trim();
-                String[] pictureFileNames;
-                String[] previewPictureFileNames;
-                String previewStyle = "1*1";
-
-                if(_pictureFileNamesInfo.length() == 0) {
-                    pictureFileNames = new String[0];
-                    previewPictureFileNames = new String[0];
-                }
-                else {
-                    String[] _pictureFileNames = _pictureFileNamesInfo.split("[\\r\\n]");
-                    pictureFileNames = new String[ _pictureFileNames.length ];
-                    for(int i = 0; i < _pictureFileNames.length; i++) {
-                        pictureFileNames[i] = "images/" + _pictureFileNames[i].trim();
-                    }
-                    previewPictureFileNames = new String[1];
-                    previewPictureFileNames[0] = pictureFileNames[0];
-                }
-
-                String classifyName = subItems[4].contains("t") ? "tv-series" : "movie";
-                Long postId = postService.insert(pictureFileNames, playbillFileName, title, essay,
-                        classifyName, previewPictureFileNames, previewStyle, "label" + String.valueOf(label));
-                label++;
-                featuredPostRepository.save( new FeaturedPost( postId ));
-            }
-        };
-    }
-
-//    @Bean
-    CommandLineRunner init3(FeaturedPictureRepository featuredPictureRepository) {
+    CommandLineRunner initFeaturedPictureDB(FeaturedPictureRepository featuredPictureRepository) {
         return (evt) -> {
             featuredPictureRepository.save(new FeaturedPicture((long) 91, "sign-in"));
             featuredPictureRepository.save(new FeaturedPicture((long) 291, "sign-up"));

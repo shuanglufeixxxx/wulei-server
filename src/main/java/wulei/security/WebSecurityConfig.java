@@ -1,5 +1,7 @@
 package wulei.security;
 
+import java.util.Arrays;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.security.SecurityProperties;
 import org.springframework.context.annotation.Bean;
@@ -15,6 +17,13 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.web.csrf.CookieCsrfTokenRepository;
 import org.springframework.security.web.firewall.HttpFirewall;
 import org.springframework.security.web.firewall.StrictHttpFirewall;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.CorsConfigurationSource;
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
+import org.springframework.web.servlet.config.annotation.CorsRegistry;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
+
 import wulei.domain.Account;
 import wulei.repository.AccountRepository;
 import wulei.services.TokenService;
@@ -55,10 +64,20 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     public void configure(HttpSecurity httpSecurity) throws Exception {
+
+        CorsConfiguration corsConfiguration = new CorsConfiguration();
+        corsConfiguration.setAllowedOrigins(Arrays.asList("http://localhost:4200"));
+ 
+        UrlBasedCorsConfigurationSource corsConfigurationSource = new UrlBasedCorsConfigurationSource();
+        corsConfigurationSource.registerCorsConfiguration("/**", corsConfiguration);
+
         httpSecurity
-            .csrf()
-                .csrfTokenRepository( CookieCsrfTokenRepository.withHttpOnlyFalse() )
+            .cors()
+                .configurationSource(corsConfigurationSource)
                 .and()
+            // .csrf()
+            //     .csrfTokenRepository( CookieCsrfTokenRepository.withHttpOnlyFalse() )
+            //     .and()
             .formLogin()
                 .loginPage(urlProvider.getUrl())
                 .usernameParameter("username")
@@ -99,7 +118,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 //        return new WebMvcConfigurerAdapter() {
 //            @Override
 //            public void addCorsMappings(CorsRegistry registry) {
-//                registry.addMapping("/**").allowedOrigins("http://localhost:4200/");
+//                registry.addMapping("/**").allowedOrigins("http://localhost:4200");
 //            }
 //        };
 //    }
@@ -107,8 +126,9 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 //    @Bean
 //    CorsConfigurationSource corsConfigurationSource() {
 //        CorsConfiguration corsConfiguration = new CorsConfiguration();
-//        corsConfiguration.addAllowedOrigin("http://localhost:4200/");
-//
+//        corsConfiguration.setAllowedOrigins(Arrays.asList("http://localhost:4200"));
+//        corsConfiguration.setAllowedMethods(Arrays.asList("GET","POST"));
+
 //        UrlBasedCorsConfigurationSource corsConfigurationSource = new UrlBasedCorsConfigurationSource();
 //        corsConfigurationSource.registerCorsConfiguration("/**", corsConfiguration);
 //        return corsConfigurationSource;

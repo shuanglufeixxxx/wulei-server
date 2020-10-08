@@ -5,22 +5,31 @@ import org.springframework.core.io.Resource;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import wulei.services.ImageService;
+
+import wulei.modelpublic.PicturePublic;
+import wulei.repository.PictureRepository;
 
 @RestController
-@RequestMapping("/images")
+@RequestMapping("/image")
 public class ImageController {
 
     @Autowired
-    ImageService imageService;
+    PictureRepository pictureRepository;
 
-    @GetMapping(value = "/{fileName:.+}")
+    // @GetMapping(
+    //     value = "/{id}",
+    //     produces = MediaType.IMAGE_JPEG_VALUE
+    // )
+    // public @ResponseBody byte[] get(@PathVariable long id) {
+    //     return this.pictureRepository.findOne(id).getBytes();
+    // }
+
+    @GetMapping(value = "/{id}")
     @ResponseBody
-    public ResponseEntity<Resource> serveImage(@PathVariable String fileName) {
-        Resource imageResource = this.imageService.loadAsResource(fileName);
+    public ResponseEntity<byte[]> serveImage(@PathVariable long id) {
         return ResponseEntity
                 .ok()
                 .contentType(MediaType.IMAGE_JPEG)
-                .body(imageResource);
+                .body(this.pictureRepository.findOne(id).getBytes());
     }
 }

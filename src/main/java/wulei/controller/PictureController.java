@@ -2,6 +2,7 @@ package wulei.controller;
 
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
 import wulei.domain.Picture;

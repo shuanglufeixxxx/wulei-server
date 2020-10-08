@@ -21,23 +21,9 @@ public class PostPublic {
     public PostPublic(Post post) {
         this.id = post.getId();
         this.pictureCollectionId = post.getPictureCollectionId();
-        this.playbillId = post.getPlaybill();
-        try {
-            byte[] titleTemp = post.getTitle();
-            byte[] essayTemp = post.getEssay();
-            if(titleTemp != null) {
-                String titleFileName = IOUtils.toString(titleTemp, "UTF-8");
-                this.title = FileUtils.readFileToString(FileUtils.getFile(titleFileName), "UTF-8");
-            }
-
-            if(essayTemp != null) {
-                String essayFileName = IOUtils.toString(essayTemp, "UTF-8");
-                this.essay = FileUtils.readFileToString(FileUtils.getFile(essayFileName), "UTF-8");
-            }
-        }
-        catch (IOException e) {
-            e.printStackTrace();
-        }
+        this.playbillId = post.getPlaybillId();
+        this.title = post.getTitle();
+        this.essay = post.getEssay();
         this.createDate = post.getCreateDate();
         this.classify = post.getClassify();
         this.previewPictureCollectionId = post.getPreviewPictureCollectionId();
@@ -73,11 +59,11 @@ public class PostPublic {
         this.pictureCollectionId = pictureCollectionId;
     }
 
-    public Long getPlaybill() {
+    public Long getPlaybillId() {
         return this.playbillId;
     }
 
-    public void setPlaybill(Long playbillId) {
+    public void setPlaybillId(Long playbillId) {
         this.playbillId = playbillId;
     }
 

@@ -89,16 +89,10 @@ public class PictureService {
 //        }
 //    }
 
-    public Long insertWithPictureCollection(String[] pictureFileNames) throws Exception {
-        //String pictureCollectionId = UUIDUtil.getInstance().generateId();
+    public Long insertWithPictureCollection(byte[][] pictures) throws Exception {
         PictureCollection pictureCollection = pictureCollectionRepository.save( new PictureCollection() );
-        for(String pfn: pictureFileNames) {
-            //String pictureId = UUIDUtil.getInstance().generateId();
-//            System.out.print("----------------------------------------------");
-//            System.out.println(Paths.get("").resolve(pfn).toUri());
-            //byte[] bytes = IOUtils.toByteArray(Paths.get("").resolve(pfn).toUri());
-            byte[] pfnBytes = pfn.getBytes("UTF-8");
-            Picture picture = pictureRepository.save( new Picture( pfnBytes, pfnBytes ) );
+        for(byte[] p: pictures) {
+            Picture picture = pictureRepository.save( new Picture( p, p ) );
             pictureItemRepository.save( new PictureItem( pictureCollection.getId(), picture.getId() ));
         }
         return pictureCollection.getId();

@@ -10,22 +10,22 @@ public class Picture {
     private Long id;
 
     @Lob
-    private byte[] previewSource;
+    private byte[] preview;
 
     @Lob
-    private byte[] source;
+    private byte[] bytes;
 
     public Picture() {}
 
 //    public Picture(PicturePublic picture) {
 //        this.id = picture.getId();
-//        this.previewSource = picture.getPreviewSource();
-//        this.source = picture.getSource();
+//        this.preview = picture.getPreview();
+//        this.bytes = picture.getBytes();
 //    }
 
-    public Picture(byte[] previewSource, byte[] source) {
-        this.previewSource = previewSource;
-        this.source = source;
+    public Picture(byte[] preview, byte[] bytes) {
+        this.preview = preview;
+        this.bytes = bytes;
     }
 
     public Long getId() {
@@ -36,19 +36,19 @@ public class Picture {
         this.id = id;
     }
 
-    public byte[] getPreviewSource() {
-        return this.previewSource;
+    public byte[] getPreview() {
+        return this.preview;
     }
 
-    public void setPreviewSource(byte[] previewSource) {
-        this.previewSource = previewSource;
+    public void setPreview(byte[] preview) {
+        this.preview = preview;
     }
 
-    public byte[] getSource() {
-        return this.source;
+    public byte[] getBytes() {
+        return this.bytes;
     }
 
-    public void setSource(byte[] source) {
-        this.source = source;
+    public void setBytes(byte[] bytes) {
+        this.bytes = bytes;
     }
 }
