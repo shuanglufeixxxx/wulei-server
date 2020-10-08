@@ -1,7 +1,5 @@
 package wulei.domain;
 
-import wulei.modelpublic.PostPublic;
-
 import javax.persistence.*;
 
 @Entity
@@ -22,18 +20,6 @@ public class Post {
     private String previewStyle;
 
     public Post() {}
-
-//    public Post(PostPublic post) {
-//        this.id = post.getId();
-//        this.pictureCollectionId = post.getPictureCollectionId();
-//        this.playbillId = post.getPlaybill();
-//        this.title = post.getTitle();
-//        this.essay = post.getEssay();
-//        this.createDate = post.getCreateDate();
-//        this.classify = post.getClassify();
-//        this.previewPictureCollectionId = post.getPreviewPictureCollectionId();
-//        this.previewStyle = post.getPreviewStyle();
-//    }
 
     public Post(Long pictureCollectionId, Long playbillId, String title, String essay, String createDate,
                 String classify, Long previewPictureCollectionId, String previewStyle) {

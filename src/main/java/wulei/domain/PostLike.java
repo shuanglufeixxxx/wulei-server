@@ -17,13 +17,6 @@ public class PostLike {
 
     public PostLike() {}
 
-//    public PostLike(PostLikePublic like) {
-//        this.id = like.getId();
-//        this.postId = like.getPostId();
-//        this.accountId = like.getAccountId();
-//        this.createDate = like.getCreateDate();
-//    }
-
     public PostLike(Long postId, Long accountId, String createDate) {
         this.id = id;
         this.postId = postId;

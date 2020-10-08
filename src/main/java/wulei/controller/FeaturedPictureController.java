@@ -2,7 +2,6 @@ package wulei.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-import wulei.domain.Picture;
 import wulei.modelpublic.PicturePublic;
 import wulei.repository.PictureRepository;
 
@@ -18,12 +17,6 @@ public class FeaturedPictureController {
 
     @GetMapping
     public List<PicturePublic> get(@RequestParam String place) {
-//        return Arrays.asList(pictureRepository
-//                .findByPlaceFeatured(place)
-//                .stream()
-//                .map(Picture::new)
-//                .toArray(Picture[]::new)
-//        );
         return Arrays.asList(pictureRepository.findByPlaceFeatured(place)
                 .stream()
                 .map(PicturePublic::new)

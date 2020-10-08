@@ -1,11 +1,9 @@
 package wulei.repository;
 
-import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 import wulei.domain.Post;
 
-import javax.transaction.Transactional;
 import java.util.List;
 
 public interface PostRepository extends CrudRepository<Post, Long> {

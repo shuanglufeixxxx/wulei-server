@@ -2,7 +2,6 @@ package wulei.repository;
 
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
-import wulei.domain.FeaturedPicture;
 import wulei.domain.Picture;
 
 import java.util.List;

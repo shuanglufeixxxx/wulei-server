@@ -16,11 +16,6 @@ public class FeaturedPicture {
 
     public FeaturedPicture() {}
 
-//    public FeaturedPicture(FeaturedPicturePublic featuredPicturePublic) {
-//        this.id = featuredPicturePublic.getId();
-//        this.pictureId = featuredPicturePublic.getPictureId();
-//    }
-
     public FeaturedPicture(Long pictureId, String place) {
         this.pictureId = pictureId;
         this.place = place;

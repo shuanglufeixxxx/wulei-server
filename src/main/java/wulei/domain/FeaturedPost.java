@@ -16,11 +16,6 @@ public class FeaturedPost {
 
     public FeaturedPost() {}
 
-//    public FeaturedPost(FeaturedPostPublic activityFeaturedPost) {
-//        this.id = activityFeaturedPost.getId();
-//        this.postId = activityFeaturedPost.getPostId();
-//    }
-
     public FeaturedPost(Long postId) {
         this.postId = postId;
     }

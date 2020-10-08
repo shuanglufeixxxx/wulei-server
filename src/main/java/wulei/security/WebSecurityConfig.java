@@ -18,11 +18,7 @@ import org.springframework.security.web.csrf.CookieCsrfTokenRepository;
 import org.springframework.security.web.firewall.HttpFirewall;
 import org.springframework.security.web.firewall.StrictHttpFirewall;
 import org.springframework.web.cors.CorsConfiguration;
-import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
-import org.springframework.web.servlet.config.annotation.CorsRegistry;
-import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
-import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
 
 import wulei.domain.Account;
 import wulei.repository.AccountRepository;
@@ -75,6 +71,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
             .cors()
                 .configurationSource(corsConfigurationSource)
                 .and()
+            .csrf()
+                .disable()
             // .csrf()
             //     .csrfTokenRepository( CookieCsrfTokenRepository.withHttpOnlyFalse() )
             //     .and()
@@ -112,25 +110,4 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         firewall.setAllowSemicolon(true);
         return firewall;
     }
-
-//    @Bean
-//    public WebMvcConfigurer corsConfigurer() {
-//        return new WebMvcConfigurerAdapter() {
-//            @Override
-//            public void addCorsMappings(CorsRegistry registry) {
-//                registry.addMapping("/**").allowedOrigins("http://localhost:4200");
-//            }
-//        };
-//    }
-
-//    @Bean
-//    CorsConfigurationSource corsConfigurationSource() {
-//        CorsConfiguration corsConfiguration = new CorsConfiguration();
-//        corsConfiguration.setAllowedOrigins(Arrays.asList("http://localhost:4200"));
-//        corsConfiguration.setAllowedMethods(Arrays.asList("GET","POST"));
-
-//        UrlBasedCorsConfigurationSource corsConfigurationSource = new UrlBasedCorsConfigurationSource();
-//        corsConfigurationSource.registerCorsConfiguration("/**", corsConfiguration);
-//        return corsConfigurationSource;
-//    }
 }

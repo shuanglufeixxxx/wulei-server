@@ -6,9 +6,6 @@ src/main/resources/static
 temp/
 bin/
 .vscode/
-data
-data2
-sample.sqlite
 .DS_Store
 
 

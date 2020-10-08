@@ -18,11 +18,7 @@ import wulei.services.PostService;
 
 import java.io.FileInputStream;
 import java.io.IOException;
-import java.io.InputStream;
 import java.nio.file.Paths;
-import java.util.Arrays;
-import java.util.stream.Stream;
-
 import com.google.gson.Gson;
 
 class NonDramaPost {
@@ -128,7 +124,7 @@ public class WuleiApplication extends SpringBootServletInitializer {
     CommandLineRunner initFeaturedPictureDB(FeaturedPictureRepository featuredPictureRepository) {
         return (evt) -> {
             featuredPictureRepository.save(new FeaturedPicture((long) 91, "sign-in"));
-            featuredPictureRepository.save(new FeaturedPicture((long) 291, "sign-up"));
+            featuredPictureRepository.save(new FeaturedPicture((long) 196, "sign-up"));
         };
     }
 }

@@ -1,11 +1,9 @@
 package wulei.repository;
 
-import org.springframework.data.domain.Example;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.repository.query.QueryByExampleExecutor;
-import wulei.domain.Post;
 import wulei.domain.PostLike;
 
 import javax.transaction.Transactional;

@@ -5,7 +5,6 @@ import org.springframework.data.domain.Example;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
-import wulei.domain.Post;
 import wulei.domain.PostLike;
 import wulei.modelpublic.PostPublic;
 import wulei.modelpublic.Value;

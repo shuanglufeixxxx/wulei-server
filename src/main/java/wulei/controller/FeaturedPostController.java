@@ -2,7 +2,7 @@ package wulei.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-import wulei.domain.Post;
+
 import wulei.modelpublic.PostPublic;
 import wulei.repository.PostRepository;
 
@@ -18,12 +18,6 @@ public class FeaturedPostController {
 
     @GetMapping
     public List<PostPublic> get(@RequestParam String classify) {
-//        return Arrays.asList(postRepository
-//                .findByClassifyFeatured(classify)
-//                .stream()
-//                .map(Post::new)
-//                .toArray(Post[]::new)
-//        );
         return Arrays.asList(postRepository.findByClassifyFeatured(classify)
                 .stream()
                 .map(PostPublic::new)

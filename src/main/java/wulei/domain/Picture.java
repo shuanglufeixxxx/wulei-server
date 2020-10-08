@@ -17,12 +17,6 @@ public class Picture {
 
     public Picture() {}
 
-//    public Picture(PicturePublic picture) {
-//        this.id = picture.getId();
-//        this.preview = picture.getPreview();
-//        this.bytes = picture.getBytes();
-//    }
-
     public Picture(byte[] preview, byte[] bytes) {
         this.preview = preview;
         this.bytes = bytes;

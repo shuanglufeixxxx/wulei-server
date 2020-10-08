@@ -24,20 +24,14 @@ repositories {
     mavenCentral()
 }
 
-//configurations {
-//    providedRuntime
-//}
-
 dependencies {
+    compile('org.springframework.boot:spring-boot-starter-actuator')
     compile('com.google.code.gson:gson:2.8.6')
     compile('javax.xml.bind:jaxb-api:2.3.0')
     compile('org.springframework.boot:spring-boot-starter-web')
     compile('org.springframework.boot:spring-boot-starter-security')
     compile('org.springframework.boot:spring-boot-starter-data-jpa')
-//    providedRuntime('org.springframework.boot:spring-boot-starter-tomcat')
     compile('mysql:mysql-connector-java:5.1.49')
-//    compile('org.hibernate:hibernate-core:5.2.13.Final')
-//    compile('org.xerial:sqlite-jdbc:3.21.0')
     compile('commons-io:commons-io:2.6')
     compile('org.springframework:spring-jdbc:4.1.5.RELEASE')
     testCompile('org.springframework.boot:spring-boot-starter-test')

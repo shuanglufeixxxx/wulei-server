@@ -35,6 +35,7 @@ class AccountController {
     @PostMapping(value = "/signUp")
     public String signUp(@RequestBody SignUpInfo signUpInfo, @RequestParam(defaultValue = "Yes") String rememberMe) {
         Account account = new Account();
+        System.out.printf("%n%n%n%nsignupinfo %s%n", signUpInfo.getUsername());
         account.setUsername( signUpInfo.getUsername() );
 
         if( this.accountRepository.exists( Example.of(account)) ) {
@@ -51,6 +52,7 @@ class AccountController {
 
     @PostMapping(value = "/signIn")
     public String signIn(@RequestBody SignInInfo signInInfo, @RequestParam(defaultValue = "Yes") String rememberMe) {
+        System.out.printf("%n%n%n%nsignininfo %s%n", signInInfo.getUsername());
 
         return "forward:" + urlProvider.getUrlWithParams(signInInfo.getUsername(),
                 signInInfo.getPassword(), "Yes".equals(rememberMe));

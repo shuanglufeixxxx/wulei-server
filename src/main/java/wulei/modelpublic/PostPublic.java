@@ -1,10 +1,6 @@
 package wulei.modelpublic;
 
-import org.apache.commons.io.FileUtils;
-import org.apache.commons.io.IOUtils;
 import wulei.domain.Post;
-
-import java.io.IOException;
 
 public class PostPublic {
 
@@ -29,19 +25,6 @@ public class PostPublic {
         this.previewPictureCollectionId = post.getPreviewPictureCollectionId();
         this.previewStyle = post.getPreviewStyle();
     }
-
-//    public PostPublic(String id, String pictureCollectionId, String playbillId, String title, String essay,
-//                      String createDate, String classify, String previewPictureCollectionId, String previewStyle) {
-//        this.id = id;
-//        this.pictureCollectionId = pictureCollectionId;
-//        this.playbillId = playbillId;
-//        this.title = title;
-//        this.essay = essay;
-//        this.createDate = createDate;
-//        this.classify = classify;
-//        this.previewPictureCollectionId = previewPictureCollectionId;
-//        this.previewStyle = previewStyle;
-//    }
 
     public Long getId() {
         return id;

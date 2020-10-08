@@ -1,0 +1,8 @@
+spring:
+  datasource:
+    url: jdbc:mysql://localhost:3306/wulei?useSSL=false&useUnicode=yes&characterEncoding=UTF-8
+    username: wulei_server_admin
+    password: atrx
+  jpa:
+    hibernate:
+      ddl-auto: update
