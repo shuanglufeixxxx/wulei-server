@@ -4,6 +4,7 @@ import java.util.Arrays;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.security.SecurityProperties;
+import org.springframework.boot.actuate.autoconfigure.ManagementServerProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.annotation.Order;
@@ -25,11 +26,8 @@ import wulei.repository.AccountRepository;
 import wulei.services.TokenService;
 
 @Configuration
-@Order(SecurityProperties.ACCESS_OVERRIDE_ORDER)
+@Order(ManagementServerProperties.ACCESS_OVERRIDE_ORDER)
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
-
-//    @Autowired
-//    AccountService accountService;
 
     @Autowired
     AccountRepository accountRepository;
@@ -54,7 +52,13 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 throw new UsernameNotFoundException("");
             }
 
-            return new AccountDetails(account.getId(), account.getUsername(), account.getPassword(), AuthorityUtils.createAuthorityList("ROLE_USER") );
+            if (account.getUsername().compareTo("Admin") == 0) {
+                return new AccountDetails(account.getId(), account.getUsername(), account.getPassword(),
+                        AuthorityUtils.createAuthorityList("ROLE_ACTUATOR", "ROLE_USER"));
+            }
+
+            return new AccountDetails(account.getId(), account.getUsername(), account.getPassword(),
+                    AuthorityUtils.createAuthorityList("ROLE_USER"));
         };
     }
 
@@ -66,16 +70,15 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
  
         UrlBasedCorsConfigurationSource corsConfigurationSource = new UrlBasedCorsConfigurationSource();
         corsConfigurationSource.registerCorsConfiguration("/**", corsConfiguration);
+        
 
         httpSecurity
             .cors()
                 .configurationSource(corsConfigurationSource)
                 .and()
             .csrf()
-                .disable()
-            // .csrf()
-            //     .csrfTokenRepository( CookieCsrfTokenRepository.withHttpOnlyFalse() )
-            //     .and()
+                .csrfTokenRepository( CookieCsrfTokenRepository.withHttpOnlyFalse() )
+                .and()
             .formLogin()
                 .loginPage(urlProvider.getUrl())
                 .usernameParameter("username")
@@ -96,6 +99,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .deleteCookies("remember-me")
                 .and()
             .authorizeRequests()
+                .antMatchers("/management").hasAnyAuthority("ROLE_ACTUATOR")
                 .anyRequest().permitAll();
     }
 
@@ -104,7 +108,6 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         webSecurity.httpFirewall( allowSemicolonHttpFireWall() );
     }
 
-    @Bean
     public HttpFirewall allowSemicolonHttpFireWall() {
         StrictHttpFirewall firewall = new StrictHttpFirewall();
         firewall.setAllowSemicolon(true);

@@ -25,6 +25,7 @@ repositories {
 }
 
 dependencies {
+    compile('org.springframework.boot:spring-boot-starter-parent:1.5.22.RELEASE')
     compile('org.springframework.boot:spring-boot-starter-actuator')
     compile('com.google.code.gson:gson:2.8.6')
     compile('javax.xml.bind:jaxb-api:2.3.1')
