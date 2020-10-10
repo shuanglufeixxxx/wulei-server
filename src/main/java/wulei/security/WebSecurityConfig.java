@@ -105,12 +105,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     public void configure(WebSecurity webSecurity) throws Exception {
-        webSecurity.httpFirewall( allowSemicolonHttpFireWall() );
-    }
-
-    public HttpFirewall allowSemicolonHttpFireWall() {
         StrictHttpFirewall firewall = new StrictHttpFirewall();
         firewall.setAllowSemicolon(true);
-        return firewall;
+        webSecurity.httpFirewall( firewall );
     }
 }
