@@ -20,6 +20,6 @@ public class ImageController {
         return ResponseEntity
                 .ok()
                 .contentType(MediaType.IMAGE_JPEG)
-                .body(this.pictureRepository.findOne(id).getBytes());
+                .body(this.pictureRepository.findById(id).get().getBytes());
     }
 }

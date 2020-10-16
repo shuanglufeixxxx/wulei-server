@@ -18,7 +18,6 @@ public class PostLike {
     public PostLike() {}
 
     public PostLike(Long postId, Long accountId, String createDate) {
-        this.id = id;
         this.postId = postId;
         this.accountId = accountId;
         this.createDate = createDate;

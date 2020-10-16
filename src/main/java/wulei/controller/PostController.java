@@ -18,7 +18,7 @@ class PostController {
 
     @GetMapping("/{id}")
     public PostPublic get(@PathVariable long id) {
-        return new PostPublic( this.postRepository.findOne(id) );
+        return new PostPublic( this.postRepository.findById(id).get() );
     }
 
     @GetMapping

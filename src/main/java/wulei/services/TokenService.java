@@ -35,7 +35,7 @@ public class TokenService implements PersistentTokenRepository {
     public PersistentRememberMeToken getTokenForSeries(String seriesId) {
         if(seriesId == null) { return null; }
 
-        Token token = tokenRepository.findOne(seriesId);
+        Token token = tokenRepository.findById(seriesId).get();
         return token == null ? null : token.toPersistentRememberMeToken();
     }
 }
