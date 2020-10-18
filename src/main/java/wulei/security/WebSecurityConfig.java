@@ -3,6 +3,7 @@ package wulei.security;
 import java.util.Arrays;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.actuate.trace.http.InMemoryHttpTraceRepository;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
@@ -31,9 +32,6 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     TokenService tokenService;
 
     @Autowired
-    SignInWithFormSubmissionUrlProvider urlProvider;
-
-    @Autowired
     public void initialize(AuthenticationManagerBuilder authenticationManagerBuilder) throws Exception{
         authenticationManagerBuilder.userDetailsService( userDetailsService() );
     }
@@ -44,15 +42,15 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
             Account account = accountRepository.findByUsername(username);
 
             if(account == null) {
-                throw new UsernameNotFoundException("");
+                throw new UsernameNotFoundException("username not found");
             }
-
+            
             if (account.getUsername().compareTo("Admin") == 0) {
-                return new AccountDetails(account.getId(), account.getUsername(), account.getPassword(),
+                return new AccountDetails(account.getId(), account.getUsername(), "{noop}" + account.getPassword(),
                         AuthorityUtils.createAuthorityList("ROLE_ACTUATOR", "ROLE_USER"));
             }
 
-            return new AccountDetails(account.getId(), account.getUsername(), account.getPassword(),
+            return new AccountDetails(account.getId(), account.getUsername(), "{noop}" + account.getPassword(),
                     AuthorityUtils.createAuthorityList("ROLE_USER"));
         };
     }
@@ -66,7 +64,6 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         UrlBasedCorsConfigurationSource corsConfigurationSource = new UrlBasedCorsConfigurationSource();
         corsConfigurationSource.registerCorsConfiguration("/**", corsConfiguration);
         
-
         httpSecurity
             .cors()
                 .configurationSource(corsConfigurationSource)
@@ -75,7 +72,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .csrfTokenRepository( CookieCsrfTokenRepository.withHttpOnlyFalse() )
                 .and()
             .formLogin()
-                .loginPage(urlProvider.getUrl())
+                .loginPage("/account/toSignInPage")
+                .loginProcessingUrl("/account/signIn")
                 .usernameParameter("username")
                 .passwordParameter("password")
                 .successForwardUrl("/account/signInSucceed")
@@ -94,7 +92,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .deleteCookies("remember-me")
                 .and()
             .authorizeRequests()
-                .antMatchers("/management").hasAnyAuthority("ROLE_ACTUATOR")
+                .antMatchers("/actuator/**").hasAnyAuthority("ROLE_ACTUATOR")
                 .anyRequest().permitAll();
     }
 
@@ -103,5 +101,10 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         StrictHttpFirewall firewall = new StrictHttpFirewall();
         firewall.setAllowSemicolon(true);
         webSecurity.httpFirewall( firewall );
+    }
+
+    @Bean
+    public InMemoryHttpTraceRepository httpTraceRepository() {
+        return new InMemoryHttpTraceRepository();
     }
 }

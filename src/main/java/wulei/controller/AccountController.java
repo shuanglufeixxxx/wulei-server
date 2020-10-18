@@ -1,18 +1,19 @@
 package wulei.controller;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Example;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.View;
+
 import wulei.domain.Account;
-import wulei.modelpublic.SignInInfo;
-import wulei.modelpublic.SignUpInfo;
 import wulei.modelpublic.Value;
 import wulei.repository.AccountRepository;
 import wulei.security.AccountDetails;
-import wulei.security.SignInWithFormSubmissionUrlProvider;
 
 @Controller
 @RequestMapping("/account")
@@ -20,9 +21,6 @@ class AccountController {
 
     @Autowired
     private AccountRepository accountRepository;
-
-    @Autowired
-    private SignInWithFormSubmissionUrlProvider urlProvider;
 
     @GetMapping("/exist")
     @ResponseBody
@@ -33,35 +31,35 @@ class AccountController {
     }
 
     @PostMapping(value = "/signUp")
-    public String signUp(@RequestBody SignUpInfo signUpInfo, @RequestParam(defaultValue = "Yes") String rememberMe) {
+    public String signUp(@RequestParam String username, @RequestParam String password
+            , @RequestParam(defaultValue = "Yes") String rememberMe , HttpServletRequest request) {
+
         Account account = new Account();
-        System.out.printf("%n%n%n%nsignupinfo %s%n", signUpInfo.getUsername());
-        account.setUsername( signUpInfo.getUsername() );
+        account.setUsername( username );
 
         if( this.accountRepository.exists( Example.of(account)) ) {
             return "forward:/account/signInFailed";
         }
 
-        account.setPassword( signUpInfo.getPassword() );
+        account.setPassword( password );
 
         this.accountRepository.save(account);
 
-        return "forward:" + urlProvider.getUrlWithParams(signUpInfo.getUsername(),
-                signUpInfo.getPassword(), "Yes".equals(rememberMe));
+        request.setAttribute( View.RESPONSE_STATUS_ATTRIBUTE, HttpStatus.TEMPORARY_REDIRECT );
+
+        return "redirect:/account/signIn";
     }
 
-    @PostMapping(value = "/signIn")
-    public String signIn(@RequestBody SignInInfo signInInfo, @RequestParam(defaultValue = "Yes") String rememberMe) {
-        System.out.printf("%n%n%n%nsignininfo %s%n", signInInfo.getUsername());
-
-        return "forward:" + urlProvider.getUrlWithParams(signInInfo.getUsername(),
-                signInInfo.getPassword(), "Yes".equals(rememberMe));
+    @RequestMapping(value = "/toSignInPage")
+    public String toSignIn() {
+        return "redirect:/(action:sign-in)";
     }
 
     @RequestMapping(value = "/signInSucceed")
     @ResponseStatus(HttpStatus.OK)
     @ResponseBody
     public Value<Account> signInSucceed(@AuthenticationPrincipal AccountDetails accountDetails) {
+
         Account account = new Account( accountDetails.getUsername(), null );
         account.setId(accountDetails.getId());
 

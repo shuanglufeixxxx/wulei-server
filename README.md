@@ -20,4 +20,7 @@ $ mysql -h `<azure-database-domain>` -u `<root-username>` -p
 `>` create database wulei character set utf8mb4 collate utf8mb4_general_ci;
 `>` grant all on wulei.* to `<username>`;
 # Deploy to Azure
+$ gradle clean
+$ gradle bootJar -x test
 https://docs.microsoft.com/en-us/azure/spring-cloud/
+hint: builded jar is under ./build/libs
