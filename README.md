@@ -1,6 +1,6 @@
 # Wulei-server
 
-The backend source code for Wulei fansite project.\
+The backend project for Wulei fansite.\
 This is the updated version of my old repository https://github.com/sparrowtree/wulei-server
 ## Setup local MySQL Server
 install MySQL Server 5.7\
