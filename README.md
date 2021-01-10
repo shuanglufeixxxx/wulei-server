@@ -5,7 +5,7 @@ This is the updated version of my old repository https://github.com/sparrowtree/
 ## Setup local MySQL Server
 install MySQL Server 5.7\
 add 'export PATH="/usr/local/mysql/bin:$PATH"' to ~/.bash_profile
-##Setup local database
+## Setup local database
 $ mysql -u root -p\
 `>` create user 'wulei_server_admin' identified by 'atrx';\
 `>` create database wulei character set utf8mb4 collate utf8mb4_general_ci;\
