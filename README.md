@@ -1,5 +1,4 @@
 # Wulei-server
-
 The backend project for Wulei fansite.\
 This is the updated version of my old repository https://github.com/sparrowtree/wulei-server
 ## Setup local MySQL Server
@@ -20,7 +19,7 @@ $ gradle bootRun
 https://docs.microsoft.com/en-us/azure/mysql/
 ## Setup Azure database
 $ mysql -h `<azure-database-domain>` -u `<root-username>` -p\
-`>` create user `<username>` identified by `<password>`;\
+`>` create user '`<username>`' identified by '`<password>`';\
 `>` create database wulei character set utf8mb4 collate utf8mb4_general_ci;\
 `>` grant all on wulei.* to `<username>`;
 ## Deploy to Azure
