@@ -1,6 +1,7 @@
 # Wulei-server
-The backend project for Wulei fansite.\
-This is the updated version of my old repository https://github.com/sparrowtree/wulei-server
+This is The backend project for Wulei fansite.\
+The frontend project for Wulei fansite is [here](https://github.com/shuanglufeixxxx/wulei)\
+This project is migrated and upgraded from my old github ([sparrowtree](https://github.com/sparrowtree/wulei-server))
 ## Setup local MySQL Server
 install MySQL Server 5.7\
 add 'export PATH="/usr/local/mysql/bin:$PATH"' to ~/.bash_profile
@@ -16,7 +17,7 @@ make all @Bean annotations near 'CommandLineRunner' in WuleiApplication.java as 
 ## Run project locally
 $ gradle bootRun
 ## Setup Azure MySQL Server
-https://docs.microsoft.com/en-us/azure/mysql/
+see the [official guide for Azure MySQL](https://docs.microsoft.com/en-us/azure/mysql/)
 ## Setup Azure database
 $ mysql -h `<azure-database-domain>` -u `<root-username>` -p\
 `>` create user '`<username>`' identified by '`<password>`';\
@@ -25,5 +26,4 @@ $ mysql -h `<azure-database-domain>` -u `<root-username>` -p\
 ## Deploy to Azure
 $ gradle clean\
 $ gradle bootJar -x test\
-https://docs.microsoft.com/en-us/azure/spring-cloud/\
-hint: builded jar is under ./build/libs
+see the [official guide for Azure Spring Cloud](https://docs.microsoft.com/en-us/azure/spring-cloud/) (hint: builded jar is under ./build/libs)
