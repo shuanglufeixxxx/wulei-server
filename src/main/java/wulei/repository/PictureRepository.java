@@ -13,8 +13,7 @@ public interface PictureRepository extends CrudRepository<Picture, Long> {
             nativeQuery = true)
     List<PicturePublic> findByPlaceFeatured(String place);
 
-    @Query(value = "select id from picture where id in (select picture_id from picture_collection join picture_item " +
-            "on picture_collection.id = picture_item.picture_collection_id where picture_collection_id = ?)",
+    @Query(value = "select id from picture where id in (select picture_id from picture_item where picture_collection_id = ?)",
             nativeQuery = true)
     List<PicturePublic> findByPictureCollectionId(String pictureCollectionId);
 }
