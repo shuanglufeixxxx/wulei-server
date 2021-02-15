@@ -1,9 +1,12 @@
 spring:
-  datasource:
-    driver-class-name: com.mysql.jdbc.Driver
-    url: jdbc:mysql://<>.mysql.database.azure.com:3306/wulei?useSSL=true&useUnicode=yes&characterEncoding=UTF-8&serverTimezone=UTC
-    username: <>
-    password: <>
+  profiles:
+    # custom datasource attribute from application-dev.yml or application-prod.yml
+    include: dev
+  # datasource:
+    # driver-class-name: com.mysql.jdbc.Driver
+    # url: jdbc:mysql://<>.mysql.database.azure.com:3306/wulei?useSSL=true&useUnicode=yes&characterEncoding=UTF-8&serverTimezone=UTC
+    # username: <>
+    # password: <>
   jpa:
     hibernate:
       ddl-auto: update
