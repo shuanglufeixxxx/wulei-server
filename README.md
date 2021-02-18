@@ -9,10 +9,10 @@ add 'export PATH="/usr/local/mysql/bin:$PATH"' to ~/.bash_profile
 $ mysql -u root -p\
 \> create user 'wulei_server_admin' identified by 'atrx';\
 \> create database wulei character set utf8mb4 collate utf8mb4_general_ci;\
-\> grant all on wulei.* to 'wulei_server_admin';\
+\> grant all on wulei.* to 'wulei_server_admin';
 ## Backup & restore database
 $ mysqldump -u root -p --databases wulei \> wulei-dump.sql --no-create-db\
-\> source /pathto/wulei-dump.sql;\
+\> source /pathto/wulei-dump.sql;
 ## Run project first time locally
 undo comment all @Bean annotations near 'CommandLineRunner' in WuleiApplication.java\
 $ gradle bootRun\
