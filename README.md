@@ -7,9 +7,9 @@ install MySQL Server 5.7\
 add 'export PATH="/usr/local/mysql/bin:$PATH"' to ~/.bash_profile
 ## Setup local database
 $ mysql -u root -p\
-\> create user 'wulei_server_admin' identified by 'atrx';\
+\> create user 'username' identified by 'password';\
 \> create database wulei character set utf8mb4 collate utf8mb4_general_ci;\
-\> grant all on wulei.* to 'wulei_server_admin';
+\> grant all on wulei.* to 'username';
 ## Backup & restore database
 $ mysqldump -u root -p --databases wulei \> wulei-dump.sql --no-create-db\
 \> source /pathto/wulei-dump.sql;

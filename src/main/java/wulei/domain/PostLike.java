@@ -4,10 +4,15 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.Table;
+import javax.persistence.UniqueConstraint;
 
 @Entity
 @Table(uniqueConstraints={
-    @UniqueConstraint(columnNames = {"postId", "accountId"})
+    @UniqueConstraint(
+        name = "post_like_unique_post_id_account_id_ZN",
+        columnNames = {"postId", "accountId"}
+    )
 })
 public class PostLike {
 
