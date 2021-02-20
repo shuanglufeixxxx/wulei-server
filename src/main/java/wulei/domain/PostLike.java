@@ -17,7 +17,7 @@ import javax.persistence.UniqueConstraint;
 public class PostLike {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private Long postId;
     private Long accountId;
