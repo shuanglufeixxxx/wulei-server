@@ -1,4 +1,4 @@
-# Wulei-server
+# Wulei-spring
 This is The backend project for Wulei fansite.\
 The frontend project for Wulei fansite is [here](https://github.com/shuanglufeixxxx/wulei-angular-xsrf)\
 This project is migrated and upgraded from my old github ([sparrowtree](https://github.com/sparrowtree/wulei-server))
