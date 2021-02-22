@@ -1,6 +1,6 @@
 # Wulei-spring
 Wulei fansite's backend developed by Spring.\
-It's secured by XSRF-TOKEN strategy.\ 
+It's secured by XSRF-TOKEN strategy.<br />
 The frontend project for Wulei fansite is [here](https://github.com/shuanglufeixxxx/wulei-angular-xsrf)\
 This project is migrated and upgraded from my old github ([sparrowtree](https://github.com/sparrowtree/wulei-server))
 ## Setup local MySQL Server
